@@ -1,109 +1,114 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdn.tailwindcss.com"></script>
-        <title>Document</title>
-    </head>
-    <body>
-        <div class="container ml-auto mr-auto flex flex-wrap items-start mt-8">
-            <h1 class="text-3x1 font-extrabold text-center w-full">Formulario de Registro de Trabajador</h1>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container ml-auto mr-auto flex flex-wrap items-start mt-8">
+        <h1 class="text-3x1 font-extrabold text-center w-full">Formulario de Registro de Trabajador</h1>
+    </div>
 
-        <form 
-            class="max-w-64 flex flex-col item-center justify-center mr-auto ml-auto gap-2">
-            <input class="border rounded-md" type="text" id="nombre" placeholder="Nombre" >
-            <input class="border rounded-md" type="text" id="apellido" placeholder="Apellido">    
-            <input class="border rounded-md" type="date" id="fechaNacimiento" placeholder="Fecha de Nacimiento">
-            <input class="border rounded-md" type="number" id="telefono" placeholder="Telefono">
-            <input class="border rounded-md" type="email" id="correo" placeholder="Correo">
-            <input class="border rounded-md" type="text" id="direccion" placeholder="Direccion">
-            <input class="border rounded-md" type="number" id="sueldo" placeholder="Su Sueldo">
-            <select id="genero">
-                <option value="Masculino">Masculino</option>
-                <option value="Femenino">Femenino</option>
-            </select>
+    <form 
+        class="max-w-64 flex flex-col item-center justify-center mr-auto ml-auto gap-2">
+        <input class="border rounded-md" type="text" id="nombre" placeholder="Nombre" >
+        <input class="border rounded-md" type="text" id="apellido" placeholder="Apellido">    
+        <input class="border rounded-md" type="date" id="fechaNacimiento" placeholder="Fecha de Nacimiento">
+        <input class="border rounded-md" type="number" id="telefono" placeholder="Telefono">
+        <input class="border rounded-md" type="email" id="correo" placeholder="Correo">
+        <input class="border rounded-md" type="text" id="direccion" placeholder="Direccion">
+        <input class="border rounded-md" type="number" id="sueldo" placeholder="Su Sueldo">
+        <select id="genero">
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+        </select>
+    
+        <button id="btn-form" type="submit" class="border-2 rounded-lg border-black my-5">Registrar</button>
+    
+    </form>
+    <table class="border border-black mx-auto">
+        <thead>
+            <tr>
+                <th class="mx-5 px-5">Nombre</th>
+                <th class="mx-5 px-5">Apellido</th>
+                <th class="mx-5 px-5">Edad</th>
+                <th class="mx-5 px-5">Telefono</th>
+                <th class="mx-5 px-5">Correo</th>
+                <th class="mx-5 px-5">Direccion</th>
+                <th class="mx-5 px-5">Sueldo Dolares</th>
+                <th class="mx-5 px-5">Genero</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
         
-            <button id="btn-form" type="submit" class="border-2 rounded-lg border-black">Registrar</button>
+        </tbody>
+    </table>
+    <script>
         
-        </form>
-        <table class="border border-black mx-auto">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Edad</th>
-                    <th>Telefono</th>
-                    <th>Correo</th>
-                    <th>Direccion</th>
-                    <th>Sueldo Dolares</th>
-                    <th>Genero</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
+
+        let button = document.getElementById("btn-form")
+                    
+        let trabajadores=JSON.parse(localStorage.getItem('trabajadores'))||[]
+        
+
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            const trabajador={
+            nombre:document.getElementById("nombre").value
+            ,apellido:document.getElementById("apellido").value
+            ,telefono:document.getElementById("telefono").value
+            ,correo:document.getElementById("correo").value
+            ,direccion:document.getElementById("direccion").value
+            ,sueldo:parseFloat(document.getElementById("sueldo").value) * 3.77
+            ,genero:document.getElementById("genero").value
+            ,fechaNacimiento:document.getElementById("fechaNacimiento").value
             
-            </tbody>
-        </table>
-        <script>
+            }
+            
+            const anioNacimiento=new Date(trabajador.fechaNacimiento).getFullYear()
+            const anioActual=new Date().getFullYear()
+            trabajador.edad=anioActual-anioNacimiento
+            
+            
+            trabajadores.push(trabajador)
+
+            localStorage.setItem('trabajadores',JSON.stringify(trabajadores))
+
             
 
-            let button = document.getElementById("btn-form")
-                        
-            let trabajadores=JSON.parse(localStorage.getItem('trabajadores'))||[]
-            const trabajador={}
-
-            button.addEventListener("click", (event) => {
-                event.preventDefault();
-
-                trabajador.nombre=document.getElementById("nombre").value
-                trabajador.apellido=document.getElementById("apellido").value
-                trabajador.telefono=document.getElementById("telefono").value
-                trabajador.correo=document.getElementById("correo").value
-                trabajador.direccion=document.getElementById("direccion").value
-                trabajador.sueldo=parseFloat(document.getElementById("sueldo").value) * 3.77
-                trabajador.genero=document.getElementById("genero").value
-                trabajador.fechaNacimiento=document.getElementById("fechaNacimiento").value
-                const anioNacimiento=new Date(trabajador.fechaNacimiento).getFullYear()
-                const anioActual=new Date().getFullYear()
-                trabajador.edad=anioActual-anioNacimiento
-                
-                trabajadores.push(trabajador)
-
-                localStorage.setItem('trabajadores',JSON.stringify(trabajadores))
-
-                
-
-                actualizarTabla()
-
-                function actualizarTabla(){
-                    let tablebody=document.getElementById("tableBody")
-                    tablebody.innerHTML=""
-                }
+            actualizarTabla()
+        }) 
+            function actualizarTabla(){
+                let tablebody=document.getElementById("tableBody")
+                tablebody.innerHTML="";
             
-                trabajadores.forEach(trabajador =>{
-                let tablerow = 
-                `<tr>
-                    <th>${trabajador.nombre}</th>
-                    <th>${trabajador.apellido}</th>
-                    <th>${trabajador.edad}</th>
-                    <th>${trabajador.telefono}</th>
-                    <th>${trabajador.correo}</th>
-                    <th>${trabajador.direccion}</th>
-                    <th>$${trabajador.sueldo}</th>
-                    <th>${trabajador.genero}</th>
-                </tr>` 
+        
+            trabajadores.forEach(trabajador =>{
+            let tablerow = 
+            `<tr>
+                <th>${trabajador.nombre}</th>
+                <th>${trabajador.apellido}</th>
+                <th>${trabajador.edad}</th>
+                <th>${trabajador.telefono}</th>
+                <th>${trabajador.correo}</th>
+                <th>${trabajador.direccion}</th>
+                <th>$${trabajador.sueldo}</th>
+                <th>${trabajador.genero}</th>
+            </tr>` 
 
-                let tablebody = document.getElementById("tableBody")
-                tablebody.innerHTML += tablerow
-
-
-
-            }) 
-            })          
+            tablebody.innerHTML += tablerow
 
 
-        </script>
 
-    </body>
-    </html>
+
+        })
+        }          
+
+        
+
+    </script>
+
+</body>
+</html>
